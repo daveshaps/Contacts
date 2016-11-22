@@ -8,29 +8,32 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController,UITextFieldDelegate {
 
     //MARK: Properties
     
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var phoneNumberLabel: UILabel!
+    @IBOutlet weak var nameField: UITextField!
+    @IBOutlet weak var phoneNumberField: UITextField!
     var contact: Contact?
     
     //MARK: View life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        //making this view controller the delegate for the text fields
+        self.nameField.delegate = self
+        self.phoneNumberField.delegate = self
+        
         //telling DetailsViewController what to do with contact object that was selected to trigger segue 
         if let contact = self.contact {
             if let name = contact.name {
-                self.nameLabel.text = name
+                self.nameField.text = name
             }
             if let phoneNumber = contact.phoneNumber {
-                self.phoneNumberLabel.text = phoneNumber
+                self.phoneNumberField.text = phoneNumber
             }
         }
-        
         
     }
 
@@ -39,7 +42,17 @@ class DetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    //assigning values entered into textfields to appropriate contact varible
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == self.nameField {
+            self.contact?.name = textField.text
+        } else if textField == self.phoneNumberField {
+            self.contact?.phoneNumber = textField.text
+        }
+    }
+    
+    
+    
     /*
     // MARK: - Navigation
 

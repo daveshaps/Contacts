@@ -13,8 +13,16 @@ class ContactsTableViewController: UITableViewController {
     //declare and instantiate contacts array
     var contacts:[Contact] = []
     
+    //created from scratch
     func toggleEdit() {
         tableView.setEditing(!tableView.isEditing, animated: true)
+    }
+    //created from scratch
+    func addContact() {
+        let newContact = Contact(name: "New Contact")
+        self.contacts.append(newContact)
+        let newIndexPath = IndexPath(row: self.contacts.count - 1, section: 0)
+        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
     }
     
     override func viewDidLoad() {
@@ -35,6 +43,15 @@ class ContactsTableViewController: UITableViewController {
         let moveButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(ContactsTableViewController.toggleEdit))
         navigationItem.leftBarButtonItem = moveButton
         
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(ContactsTableViewController.addContact))
+        navigationItem.rightBarButtonItem = addButton
+        
+    }
+    
+    //reloading the table for when you go back to the contacts view from details view so changes appear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
